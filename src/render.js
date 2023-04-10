@@ -1,4 +1,4 @@
-function render(employees) {
+export default function render(employees) {
     const html = `
     <!DOCTYPE html>
     <html>
@@ -60,4 +60,3 @@ function render(employees) {
   `;
   return html;
 }
-module.exports = render;

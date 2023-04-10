@@ -1,15 +1,14 @@
-const inquirer = require('inquirer');
-const fs = require('fs');
-const path = require('path');
-const Manager = require('./lib/Manager');
-const Engineer = require('./lib/Engineer');
-const Intern = require('./lib/Intern');
-const render = require('./src/render');
-const questions = require('./questions')
+import inquirer from 'inquirer';
+import fs from 'fs';
+import path from 'path';
+import Manager from './lib/Manager.js';
+import Engineer from './lib/Engineer.js';
+import Intern from './lib/Intern.js';
+import render from './src/render.js';
+import { questions } from './questions.js';
 
-const OUTPUT_DIR = path.resolve(__dirname, 'dist');
+const OUTPUT_DIR = path.resolve('dist');
 const outputPath = path.join(OUTPUT_DIR, 'index.html');
-
 const team = [];
 
  async function main() {
@@ -53,7 +52,7 @@ const team = [];
       addAnother = employeeAnswers.addAnother;
     }
     const html = render(team);
-    fs.writeFileSync(outputPath, html);
+    fs.promises.writeFile(outputPath, html);
     console.log(`Team profile generated at ${outputPath}.`);
   }
 
