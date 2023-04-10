@@ -1,0 +1,26 @@
+{
+  "name": "team-profile-generator",
+  "version": "1.0.0",
+  "description": "This is an assignment to create a team profile generator and it is primarily used as practice.",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AndrewPGibbs/Team-Profile-Generator.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AndrewPGibbs/Team-Profile-Generator/issues"
+  },
+  "homepage": "https://github.com/AndrewPGibbs/Team-Profile-Generator#readme",
+  "devDependencies": {
+    "jest": "^29.5.0"
+  },
+  "dependencies": {
+    "inquirer": "^9.1.5"
+  }
+}
