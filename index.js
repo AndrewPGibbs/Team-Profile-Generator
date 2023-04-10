@@ -1,37 +1,59 @@
 const inquirer = require('inquirer');
 const fs = require('fs');
 const path = require('path');
+const Manager = require('./lib/Manager');
+const Engineer = require('./lib/Engineer');
+const Intern = require('./lib/Intern');
+const render = require('./src/render');
+const questions = require('./questions')
 
-inquirer.prompt([
-    {
-      type: 'input',
-      name: 'managerName',
-      message: "What is the team manager's name?",
-    },
-    {
-      type: 'input',
-      name: 'managerId',
-      message: "What is the team manager's employee ID?",
-    },
-    {
-      type: 'input',
-      name: 'managerEmail',
-      message: "What is the team manager's email address?",
-    },
-    {
-      type: 'input',
-      name: 'managerOfficeNumber',
-      message: "What is the team manager's office number?",
-    },
-  ]);
+const OUTPUT_DIR = path.resolve(__dirname, 'dist');
+const outputPath = path.join(OUTPUT_DIR, 'index.html');
 
-  const generateHTML = (data) => {
-    // Load the Handlebars template
-    const template = fs.readFileSync(path.join(__dirname, 'templates', 'team-profile.hbs'), 'utf8');
-    // Compile the template
-    const compiledTemplate = Handlebars.compile(template);
-    // Render the HTML using the compiled template and the user's data
-    const html = compiledTemplate(data);
-    // Write the HTML to a file
-    fs.writeFileSync(path.join(__dirname, 'output', 'team-profile.html'), html);
-  };
+const team = [];
+
+ async function main() {
+    console.log('Please enter information for the team manager.');
+    const managerAnswers = await inquirer.prompt([
+      ...questions.filter((q) => q.name !== 'addAnother'),
+    ]);
+    const manager = new Manager(
+      managerAnswers.name,
+      managerAnswers.id,
+      managerAnswers.email,
+      managerAnswers.officeNumber
+    );
+    team.push(manager);
+    let addAnother = true;
+    while (addAnother) {
+      const employeeAnswers = await inquirer.prompt(questions);
+      let employee;
+      switch (employeeAnswers.role) {
+        case 'Manager':
+          console.log('You have already added a manager. Please choose another role.');
+          continue;
+        case 'Engineer':
+          employee = new Engineer(
+            employeeAnswers.name,
+            employeeAnswers.id,
+            employeeAnswers.email,
+            employeeAnswers.github
+          );
+          break;
+        case 'Intern':
+          employee = new Intern(
+            employeeAnswers.name,
+            employeeAnswers.id,
+            employeeAnswers.email,
+            employeeAnswers.school
+          );
+          break;
+      }
+      team.push(employee);
+      addAnother = employeeAnswers.addAnother;
+    }
+    const html = render(team);
+    fs.writeFileSync(outputPath, html);
+    console.log(`Team profile generated at ${outputPath}.`);
+  }
+
