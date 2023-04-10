@@ -57,3 +57,4 @@ const team = [];
     console.log(`Team profile generated at ${outputPath}.`);
   }
 
+main();
