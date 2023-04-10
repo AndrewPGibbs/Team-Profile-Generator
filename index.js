@@ -24,3 +24,14 @@ inquirer.prompt([
       message: "What is the team manager's office number?",
     },
   ]);
+
+  const generateHTML = (data) => {
+    // Load the Handlebars template
+    const template = fs.readFileSync(path.join(__dirname, 'templates', 'team-profile.hbs'), 'utf8');
+    // Compile the template
+    const compiledTemplate = Handlebars.compile(template);
+    // Render the HTML using the compiled template and the user's data
+    const html = compiledTemplate(data);
+    // Write the HTML to a file
+    fs.writeFileSync(path.join(__dirname, 'output', 'team-profile.html'), html);
+  };
